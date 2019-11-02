@@ -70,7 +70,7 @@ def parse_session_data(xmlfile):
 
 if __name__ == '__main__':
     #EXAMPLE
-    plex_token = get_auth_token('mannibis', '2jDEHrikwUF3EfKmnfVesf')
-    plex_content = get_session_data('192.168.1.135', '32400', plex_token)
+    plex_token = get_auth_token('username', 'password')
+    plex_content = get_session_data('192.168.1.X', '32400', plex_token)
     for display_string in parse_session_data(plex_content):
         print display_string
