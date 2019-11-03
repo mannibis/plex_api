@@ -20,7 +20,12 @@ def get_auth_token(plex_user, plex_pass):
         auth_request = requests.post(auth_url, headers=headers, data=auth_params)
         auth_response = auth_request.content
         root = ET.fromstring(auth_response)
-        return root.attrib['authToken']
+        try:
+            plex_auth_token = root.attrib['authToken']
+            return plex_auth_token
+        except KeyError:
+            print 'ERROR: Plex Username/Password Incorrect. Try again.'
+            return None
     except requests.Timeout or requests.ConnectionError or requests.HTTPError:
         return None
 
@@ -71,6 +76,8 @@ def parse_session_data(xmlfile):
 if __name__ == '__main__':
     #EXAMPLE
     plex_token = get_auth_token('username', 'password')
-    plex_content = get_session_data('192.168.1.X', '32400', plex_token)
-    for display_string in parse_session_data(plex_content):
-        print display_string
+    if plex_token is not None:
+        plex_content = get_session_data('192.168.1.x', '32400', plex_token)
+        for display_string in parse_session_data(plex_content):
+            print display_string
+
